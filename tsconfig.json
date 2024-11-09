@@ -20,9 +20,7 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src", "tests"],
    "paths": {
 		"@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"]
 	}

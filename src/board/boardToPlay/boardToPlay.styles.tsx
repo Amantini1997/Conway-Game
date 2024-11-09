@@ -13,7 +13,7 @@ export const PlayPauseContainer = styled.div`
 	margin: auto;
 
 	svg {
-		color: #ffffff;
+		color: ${({ theme }) => theme.palette.primary.contrastText};
 	}
 `;
 

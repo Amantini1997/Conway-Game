@@ -4,7 +4,7 @@ import { IBoardSize } from '../types/board.types';
 
 export const MainContainer = styled.div`
 	margin: 20px auto;
-	background-color: #ffffff;
+	background-color: ${({ theme }) => theme.palette.primary.contrastText};
 	padding: 40px;
 	border-radius: 15px;
 	width: 700px;

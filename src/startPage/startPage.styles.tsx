@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 export const Form = styled.form`
 	margin: 100px auto;
 	border-radius: 20px;
-	background-color: #ffffff;
+	background-color: ${({ theme }) => theme.palette.primary.contrastText};
 	padding: 25px;
 	display: flex;
 	flex-direction: column;
@@ -13,7 +13,7 @@ export const Form = styled.form`
 	width: 300px;
 	height: fit-content;
 	box-shadow: 5px 8px 19px 0px #00000088;
-	color: #202020;
+	color: ${({ theme }) => theme.palette.grey[900]};
 `;
 
 export const TitleContainer = styled.div`
@@ -24,7 +24,7 @@ export const Subtitle = styled((props: any) => <Typography variant='body2' {...p
 	font-size: 12px;
 	margin-top: -3px;
 	margin-bottom: 5px;
-	color: #606060;
+	color: ${({ theme }) => theme.palette.grey[700]};
 	line-height: 14px;
 `;
 
