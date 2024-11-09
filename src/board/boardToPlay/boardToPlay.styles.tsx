@@ -1,5 +1,12 @@
 import styled from '@emotion/styled';
-import { Typography } from '@mui/material';
+
+export const Container = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 300px;
+	margin: auto;
+`;
 
 export const PlayPauseContainer = styled.div`
 	background-color: ${({ theme }) => theme.palette.primary.main};
@@ -15,10 +22,6 @@ export const PlayPauseContainer = styled.div`
 	svg {
 		color: ${({ theme }) => theme.palette.primary.contrastText};
 	}
-`;
-
-export const Caption = styled((props: any) => (<Typography {...props} variant='caption' />))`
-	text-align: center;
 `;
 
 export const ButtonsContainer = styled.div`

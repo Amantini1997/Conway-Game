@@ -4,7 +4,7 @@ import { BoardContainer } from '../board.styles';
 import { Cell } from '../cell/cell.component';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-import { PlayPauseContainer } from './boardToPlay.styles';
+import { PlayPauseContainer, Container } from './boardToPlay.styles';
 import { getNextBoardState } from '../../helpers/helpers';
 import { Button, Slider } from '@mui/material';
 
@@ -67,19 +67,21 @@ export const BoardToPlay = ({ size, state, history, onChange }: Props) => {
 				{isPaused ? <PlayArrowIcon /> : <PauseIcon />}
 			</PlayPauseContainer>
 			<br />
-			<Slider
-				aria-label="Speed"
-				getAriaValueText={speedToText}
-				valueLabelFormat={speedToText}
-				value={speed}
-				onChange={(e, value) => setSpeed(value as number)}
-				max={2000}
-				min={500}
-				step={100}
-				valueLabelDisplay="auto"
-				marks={VOLUME_MARKS}
-			/>
-			<Button onClick={exportBoard}>Export</Button>
+			<Container>
+				<Slider
+					aria-label="Speed"
+					getAriaValueText={speedToText}
+					valueLabelFormat={speedToText}
+					value={speed}
+					onChange={(e, value) => setSpeed(value as number)}
+					max={2000}
+					min={500}
+					step={100}
+					valueLabelDisplay="auto"
+					marks={VOLUME_MARKS}
+				/>
+				<Button onClick={exportBoard} variant='contained'>Export</Button>
+			</Container>
 		</Fragment>
 	);
 };

@@ -65,7 +65,7 @@ export const StartPage = ({ onSubmit, defaultBoardSize }: Props) => {
 			</InputsContainer>
 			<Button variant='contained' color='info' disabled={!isValid} type='submit'>Confirm</Button>
 			<Divider>Or</Divider>
-			<Button variant='contained' component='label'>
+			<Button variant='contained'>
 				<input hidden type='file' accept='application/JSON' onChange={importBoard} />
 				Import
 			</Button>
