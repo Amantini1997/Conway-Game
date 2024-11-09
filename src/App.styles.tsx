@@ -16,6 +16,6 @@ export const Title = styled((props: any) => <Typography variant='h2' {...props} 
 	transition: font-size .3s;
 	width: 100%;
 	text-align: center;
-	color: #ffffff;
+	color: ${({ theme }) => theme.palette.primary.contrastText};
 	margin-top: 30px;
 `;
