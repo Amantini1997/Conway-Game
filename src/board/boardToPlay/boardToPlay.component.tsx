@@ -1,12 +1,12 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
-import { IBoardSize, IBoardState } from '../../types/board.types';
+import { ExportBoardData, IBoardSize, IBoardState } from '../../types/board.types';
 import { BoardContainer } from '../board.styles';
 import { Cell } from '../cell/cell.component';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import { PlayPauseContainer } from './boardToPlay.styles';
 import { getNextBoardState } from '../../helpers/helpers';
-import { Slider } from '@mui/material';
+import { Button, Slider } from '@mui/material';
 
 const VOLUME_MARKS = [
 	{
@@ -22,12 +22,21 @@ const VOLUME_MARKS = [
 type Props = {
 	size: IBoardSize,
 	state: IBoardState,
+	history: IBoardState[],
 	onChange: (newState: IBoardState) => void,
 };
-export const BoardToPlay = ({ size, state, onChange }: Props) => {
+export const BoardToPlay = ({ size, state, history, onChange }: Props) => {
 	const [isPaused, setIsPaused] = useState(true);
 	const [speed, setSpeed] = useState(1000);
 	const intervalRef = useRef<NodeJS.Timer>();
+
+	const exportBoard = () => {
+		const link = document.createElement("a");
+		const data: ExportBoardData = { history, size };
+		link.href = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(data))}`;
+		link.download = `conway_game_board_${size.cols}_x_${size.rows}.json`;
+		link.click();
+	};
 
 	const animate = useCallback(() => {
 		onChange(getNextBoardState(state, size));
@@ -70,6 +79,7 @@ export const BoardToPlay = ({ size, state, onChange }: Props) => {
 				valueLabelDisplay="auto"
 				marks={VOLUME_MARKS}
 			/>
+			<Button onClick={exportBoard}>Export</Button>
 		</Fragment>
 	);
 };
