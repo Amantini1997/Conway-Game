@@ -32,7 +32,6 @@ export const getNeighbourhoods = ({ cols, rows }: IBoardSize) => {
 				const newRow = row + tr;
 				const newCol = col + tc;
 				
-				// Check if neighbor is within bounds
 				if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
 					const neighborIndex = newRow * cols + newCol;
 					neighbours.push(neighborIndex);
