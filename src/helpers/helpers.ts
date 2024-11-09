@@ -14,7 +14,7 @@ const getNextCellState = (cell: ICell, neighbourCells: ICell[]) => {
 }
 
 const cachedNeighbourhoods: Record<string, NeighbourhoodIndexes[]> = {};
-const getNeighbourhoods = ({ cols, rows }: IBoardSize) => {
+export const getNeighbourhoods = ({ cols, rows }: IBoardSize) => {
 	let neighbourhoods = cachedNeighbourhoods[`${cols}-${rows}`];
 	if (neighbourhoods) return neighbourhoods;
 	neighbourhoods = [];
