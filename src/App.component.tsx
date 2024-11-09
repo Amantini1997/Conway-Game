@@ -19,11 +19,6 @@ export const App = () => {
 		setCurrentBoard(boardStateHistory.current?.[time] || []);
 	};
 
-	const goBackToStartPage = () => {
-		boardStateHistory.current = [];
-		updateTimeAndBoard(NO_BOARD_LOADED);
-	};
-
 	const onInitialiseBoardHistory = (stateHistory: IBoardState[], size: IBoardSize) => {
 		boardStateHistory.current = stateHistory;
 		boardSize.current = size;
@@ -45,7 +40,6 @@ export const App = () => {
 						size={boardSize.current as IBoardSize}
 						state={currentBoard}
 						onStateChange={onStateChange}
-						goBackToStartPage={goBackToStartPage}
 					/>
 				)
 				: (<StartPage onSubmit={onInitialiseBoardHistory} defaultBoardSize={boardSize.current} />)
