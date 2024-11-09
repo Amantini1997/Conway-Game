@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { Typography } from '@mui/material';
 
 export const Background = styled.div`
@@ -8,7 +9,11 @@ export const Background = styled.div`
 	overflow-y: auto;
 `;
 
-export const Title = styled(Typography)`
+export const Title = styled((props: any) => <Typography variant='h2' {...props} />)`
+	${({ $shrink }) => $shrink && css`
+		font-size: 30px;
+	`}
+	transition: font-size .3s;
 	width: 100%;
 	text-align: center;
 	color: #ffffff;

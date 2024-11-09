@@ -6,6 +6,18 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import { PlayPauseContainer } from './boardToPlay.styles';
 import { getNextBoardState } from '../../helpers/helpers';
+import { Slider } from '@mui/material';
+
+const VOLUME_MARKS = [
+	{
+	  value: 500,
+	  label: '0.5s',
+	},
+	{
+	  value: 2000,
+	  label: '2s',
+	},
+];
 
 type Props = {
 	size: IBoardSize,
@@ -14,20 +26,21 @@ type Props = {
 };
 export const BoardToPlay = ({ size, state, onChange }: Props) => {
 	const [isPaused, setIsPaused] = useState(true);
+	const [speed, setSpeed] = useState(1000);
 	const intervalRef = useRef<NodeJS.Timer>();
 
 	const animate = useCallback(() => {
 		onChange(getNextBoardState(state, size));
 	}, [state, size, onChange]);
 
+	const speedToText = useCallback((s: number) => `${(s / 1000).toFixed(2)}s`, []);
+
 	useEffect(() => {
 		if (!isPaused) {
-			intervalRef.current = setInterval(() => {
-				animate();
-			}, 500);
+			intervalRef.current = setInterval(animate, speed);
 			return () => clearInterval(intervalRef.current);
 		}
-	}, [isPaused, animate]);
+	}, [isPaused, animate, speed]);
 
 	return (
 		<Fragment>
@@ -40,9 +53,23 @@ export const BoardToPlay = ({ size, state, onChange }: Props) => {
 					/>
 				))}
 			</BoardContainer>
+			<br />
 			<PlayPauseContainer onClick={() => setIsPaused(!isPaused)}>
 				{isPaused ? <PlayArrowIcon /> : <PauseIcon />}
 			</PlayPauseContainer>
+			<br />
+			<Slider
+				aria-label="Speed"
+				getAriaValueText={speedToText}
+				valueLabelFormat={speedToText}
+				value={speed}
+				onChange={(e, value) => setSpeed(value as number)}
+				max={2000}
+				min={500}
+				step={100}
+				valueLabelDisplay="auto"
+				marks={VOLUME_MARKS}
+			/>
 		</Fragment>
 	);
 };

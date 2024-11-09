@@ -10,6 +10,7 @@ export const PlayPauseContainer = styled.div`
 	height: 40px;
 	display: grid;
 	place-content: center;
+	margin: auto;
 
 	svg {
 		color: #ffffff;

@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { IBoardSize } from '../types/board.types';
-import { CellContainer } from './cell/cell.styles';
 
 export const MainContainer = styled.div`
 	margin: 20px auto;

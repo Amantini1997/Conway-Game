@@ -40,7 +40,7 @@ export const App = () => {
 
 	return (
 		<Background>
-			<Title variant='h2'>The Conway Game</Title>
+			<Title $shrink={isBoardLoaded}>The Conway Game</Title>
 			{isBoardLoaded
 				? (
 					<Board
