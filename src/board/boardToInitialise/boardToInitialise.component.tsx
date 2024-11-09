@@ -67,7 +67,7 @@ export const BoardToInitialise = ({ size, onSubmit }: Props) => {
 				</Caption>
 				<ButtonsContainer>
 					<Button variant='contained' onClick={reset}>Reset</Button>
-					<Button variant='outlined' onClick={() => onSubmit(cells.current)}>Confirm</Button>
+					<Button variant='outlined' onClick={() => onSubmit(cells.current)}>Start</Button>
 				</ButtonsContainer>
 			</BottomSection>
 		</Fragment>
