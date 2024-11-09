@@ -1,7 +1,11 @@
-export type ICell = {
-	isAlive: boolean,
-	color: [number, number, number],
-};
+// export type ICell = {
+// 	isAlive: boolean,
+// 	color?: string,
+// };
+
+
+export type NeighbourhoodIndexes = number[];
+export type ICell = boolean;
 
 export type IBoardState = ICell[];
 
