@@ -1,26 +1,11 @@
 import { IBoardState, IBoardSize } from '../types/board.types';
 import { Form, InputsContainer, Subtitle, TitleContainer } from './startPage.styles';
-import { Button, TextField, Divider } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
+import { Button, Divider } from '@mui/material';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from './startPage.validators';
 import { ChangeEvent } from 'react';
-
-const Input = ({ name, control, label }: any) => (
-	<Controller
-		name={name}
-		control={control}
-		render={({ field: { ref: fieldRef, ...field }, formState: { errors } }) => (
-			<TextField
-				{...field}
-				label={label}
-				value={field.value}
-				error={!!errors[name]}
-				helperText={errors[name]?.message as string}
-			/>
-		)}
-	/>
-);
+import { Input } from './input.component';
 
 type FormType = {
 	rows: number;
@@ -28,19 +13,16 @@ type FormType = {
 };
 
 type Props = {
-	defaultBoardSize?: IBoardSize;
-	onInitialiseBoardHistory: (history: IBoardState[], size: IBoardSize) => void;
+	defaultBoardSize?: IBoardSize | undefined;
+	onSubmit: (history: IBoardState[], size: IBoardSize) => void;
 };
-
-export const StartPage = ({ onInitialiseBoardHistory, defaultBoardSize }: Props) => {
+export const StartPage = ({ onSubmit, defaultBoardSize }: Props) => {
 	const formData = useForm<FormType>({
 		mode: 'onChange',
 		resolver: yupResolver(schema),
 		defaultValues: defaultBoardSize,
 	});
 	const { control, handleSubmit, formState: { isValid } } = formData;
-
-	const onSubmit = (size: FormType) => onInitialiseBoardHistory([], size);
 
 	const onImportClick = (e: ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
@@ -49,7 +31,7 @@ export const StartPage = ({ onInitialiseBoardHistory, defaultBoardSize }: Props)
 			reader.onload = (e) => {
 				try {
 					const { history, size } = JSON.parse(e.target?.result as string);
-					onInitialiseBoardHistory(history, size);
+					onSubmit(history, size);
 				} catch (error) {
 					alert('Invalid JSON file');
 				}
@@ -61,7 +43,7 @@ export const StartPage = ({ onInitialiseBoardHistory, defaultBoardSize }: Props)
 	};
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit)}>
+		<Form onSubmit={handleSubmit((size: FormType) => onSubmit([], size))}>
 			<TitleContainer>
 				<Subtitle>
 					To start, select the grid dimensions

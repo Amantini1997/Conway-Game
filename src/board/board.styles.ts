@@ -7,7 +7,7 @@ export const MainContainer = styled.div`
 	background-color: #ffffff;
 	padding: 40px;
 	border-radius: 15px;
-	width: fit-content;
+	width: 700px;
 	max-width: calc(100% - 40px);
 `;
 
@@ -23,8 +23,8 @@ export const BoardContainer = styled.div<{ $size: IBoardSize, $togglable?: boole
 			cursor: pointer;
 		}
 	`}
-	height: 53vh;
-	width: 100%;
+	max-height: 53vh;
+	max-width: 100%;
 	margin: auto;
 	transition: all .2s;
 `;

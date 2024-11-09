@@ -8,12 +8,12 @@ const NO_BOARD_LOADED = -2;
 const BOARD_NOT_INITIALISED = -1;
 
 export const App = () => {
-	// const boardStateHistory = useRef<IBoardState[] | null>(null);
-	// const boardSize = useRef<IBoardSize | null>(null);
-	// const [currentBoardTime, setCurrentBoardTime] = useState(NO_BOARD_LOADED);
-	const boardStateHistory = useRef<IBoardState[] | null>([]);
-	const boardSize = useRef<IBoardSize>({ cols: 3, rows: 3 });
-	const [currentBoardTime, setCurrentBoardTime] = useState(BOARD_NOT_INITIALISED);
+	const boardStateHistory = useRef<IBoardState[] | null>(null);
+	const boardSize = useRef<IBoardSize>();
+	const [currentBoardTime, setCurrentBoardTime] = useState(NO_BOARD_LOADED);
+	// const boardStateHistory = useRef<IBoardState[] | null>([]);
+	// const boardSize = useRef<IBoardSize>({ cols: 3, rows: 3 });
+	// const [currentBoardTime, setCurrentBoardTime] = useState(BOARD_NOT_INITIALISED);
 	const [currentBoardBoard, setCurrentBoard] = useState<IBoardState>([]);
 
 	const isBoardLoaded = currentBoardTime !== NO_BOARD_LOADED;
@@ -30,6 +30,7 @@ export const App = () => {
 
 	const onInitialiseBoardHistory = (stateHistory: IBoardState[], size: IBoardSize) => {
 		boardStateHistory.current = stateHistory;
+		boardSize.current = size;
 		updateTimeAndBoard(stateHistory.length - 1);
 	};
 
@@ -50,7 +51,7 @@ export const App = () => {
 						goBackToStartPage={goBackToStartPage}
 					/>
 				)
-				: (<StartPage onInitialiseBoardHistory={onInitialiseBoardHistory} defaultBoardSize={boardSize.current} />)
+				: (<StartPage onSubmit={onInitialiseBoardHistory} defaultBoardSize={boardSize.current} />)
 			}
 		</Background>
 	);
