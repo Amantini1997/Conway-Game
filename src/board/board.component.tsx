@@ -12,7 +12,7 @@ type Props = {
 }
 export const Board = ({ size, state, onStateChange, goBackToStartPage }: Props) => (
 	<MainContainer>
-		{!state
+		{!state?.length
 			? (<BoardToInitialise size={size} onSubmit={onStateChange} />)
 			: (<BoardToPlay size={size} state={state} onChange={onStateChange} />)
 		}

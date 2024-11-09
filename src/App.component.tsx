@@ -12,25 +12,30 @@ export const App = () => {
 	// const boardSize = useRef<IBoardSize | null>(null);
 	// const [currentBoardTime, setCurrentBoardTime] = useState(NO_BOARD_LOADED);
 	const boardStateHistory = useRef<IBoardState[] | null>([]);
-	const boardSize = useRef<IBoardSize>({ cols: 25, rows: 25 });
+	const boardSize = useRef<IBoardSize>({ cols: 3, rows: 3 });
 	const [currentBoardTime, setCurrentBoardTime] = useState(BOARD_NOT_INITIALISED);
+	const [currentBoardBoard, setCurrentBoard] = useState<IBoardState>([]);
 
 	const isBoardLoaded = currentBoardTime !== NO_BOARD_LOADED;
 
+	const updateTimeAndBoard = (time: number) => {
+		setCurrentBoardTime(time);
+		setCurrentBoard(boardStateHistory.current?.[time] || []);
+	};
+
 	const goBackToStartPage = () => {
 		boardStateHistory.current = [];
-		setCurrentBoardTime(NO_BOARD_LOADED);
-	}
+		updateTimeAndBoard(NO_BOARD_LOADED);
+	};
 
 	const onInitialiseBoardHistory = (stateHistory: IBoardState[], size: IBoardSize) => {
 		boardStateHistory.current = stateHistory;
-		boardSize.current = size;
-		setCurrentBoardTime(stateHistory.length - 1);
+		updateTimeAndBoard(stateHistory.length - 1);
 	};
 
 	const onStateChange = (newState: IBoardState) => {
-		setCurrentBoardTime(currentBoardTime + 1);
 		boardStateHistory.current?.push(newState);
+		updateTimeAndBoard(currentBoardTime + 1);
 	};
 
 	return (
@@ -40,8 +45,7 @@ export const App = () => {
 				? (
 					<Board
 						size={boardSize.current as IBoardSize}
-						key={currentBoardTime}
-						state={boardStateHistory.current?.[currentBoardTime]}
+						state={currentBoardBoard}
 						onStateChange={onStateChange}
 						goBackToStartPage={goBackToStartPage}
 					/>

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { IBoardSize, IBoardState } from '../../types/board.types';
 import { BoardContainer } from '../board.styles';
 import { Cell } from '../cell/cell.component';
@@ -16,15 +16,18 @@ export const BoardToPlay = ({ size, state, onChange }: Props) => {
 	const [isPaused, setIsPaused] = useState(true);
 	const intervalRef = useRef<NodeJS.Timer>();
 
-	const animate = () => onChange(getNextBoardState(state, size));
+	const animate = useCallback(() => {
+		onChange(getNextBoardState(state, size));
+	}, [state, size, onChange]);
 
 	useEffect(() => {
 		if (!isPaused) {
-			intervalRef.current = setInterval(animate, 500);
-			return () => clearTimeout(intervalRef.current);
+			intervalRef.current = setInterval(() => {
+				animate();
+			}, 500);
+			return () => clearInterval(intervalRef.current);
 		}
-	// eslint-disable-next-line
-	}, [isPaused]);
+	}, [isPaused, animate]);
 
 	return (
 		<Fragment>
