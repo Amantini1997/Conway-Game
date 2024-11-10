@@ -14,8 +14,8 @@ import FastRewindIcon from '@mui/icons-material/FastRewind';
 
 const VOLUME_MARKS = [
 	{
-	  value: 500,
-	  label: '0.5s',
+	  value: 100,
+	  label: '0.1s',
 	},
 	{
 	  value: 2000,
@@ -49,7 +49,7 @@ export const BoardToPlay = ({ size, state, onChange, history, goToTime, currentT
 		onChange(getNextBoardState(state, size));
 	}, [state, size, onChange]);
 
-	const speedToText = useCallback((s: number) => `${(s / 1000).toFixed(2)}s`, []);
+	const speedToText = useCallback((s: number) => `${(s / 1000).toFixed(1)}s`, []);
 
 	useEffect(() => {
 		if (!isPaused) {
@@ -96,7 +96,7 @@ export const BoardToPlay = ({ size, state, onChange, history, goToTime, currentT
 					value={speed}
 					onChange={(e, value) => setSpeed(value as number)}
 					max={2000}
-					min={500}
+					min={100}
 					step={100}
 					valueLabelDisplay="auto"
 					marks={VOLUME_MARKS}
