@@ -70,7 +70,6 @@ export const BoardToPlay = ({ size, state, onChange, history, goToTime, currentT
 				))}
 			</BoardContainer>
 			<br />
-			currentTime: {currentTime} - lastTime: {lastTime}
 			<ControlsContainer>
 				<IconContainer disabled={!isPaused || currentTime <= 1} onClick={() => goToTime(0)}>
 					<FastRewindIcon />
