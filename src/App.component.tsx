@@ -30,9 +30,14 @@ export const App = () => {
 		updateTimeAndBoard(currentBoardTime + 1);
 	};
 
+	const goBackToStartPage = () => {
+		boardStateHistory.current = [];
+		updateTimeAndBoard(NO_BOARD_LOADED);
+	};
+
 	return (
 		<Background>
-			<Title $shrink={isBoardLoaded}>The Conway Game</Title>
+			<Title onClick={goBackToStartPage} $clickable={isBoardLoaded}>The Conway Game</Title>
 			{isBoardLoaded
 				? (
 					<Board

@@ -10,8 +10,11 @@ export const Background = styled.div`
 `;
 
 export const Title = styled((props: any) => <Typography variant='h2' {...props} />)`
-	${({ $shrink }) => $shrink && css`
+	pointer-events: none;
+	${({ $clickable }) => $clickable && css`
+		pointer-events: unset;
 		font-size: 30px;
+		cursor: pointer;
 	`}
 	transition: font-size .3s;
 	width: 100%;

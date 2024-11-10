@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { ExportBoardData, IBoardSize, IBoardState } from '../../types/board.types';
 import { BoardContainer } from '../board.styles';
-import { Cell } from '../cell/cell.component';
+import { Tile } from '../tile/tile.component';
 import { ControlsContainer, Container, IconContainer } from './boardToPlay.styles';
 import { getNextBoardState } from '../../helpers/helpers';
 import { Button, Slider } from '@mui/material';
@@ -62,7 +62,7 @@ export const BoardToPlay = ({ size, state, onChange, history, goToTime, currentT
 		<Fragment>
 			<BoardContainer $size={size}>
 				{state.map((isAlive, index) => (
-					<Cell
+					<Tile
 						key={index}
 						index={index}
 						isAlive={isAlive}

@@ -1,43 +1,43 @@
 import { Button } from '@mui/material';
 import { Fragment, useCallback, useRef, useState } from 'react';
-import { IBoardSize, IBoardState } from '../../types/board.types';
+import { IBoardSize, IBoardState, ITile } from '../../types/board.types';
 import { BoardContainer } from '../board.styles';
 import { BottomSection, ButtonsContainer, Caption } from './boardToInitialise.styles';
-import { Cell } from '../cell/cell.component';
+import { Tile } from '../tile/tile.component';
 
-const NO_PREVIOUS_TOGGLED_CELL = -1;
+const NO_PREVIOUS_TOGGLED_TILE = -1;
 type Props = { size: IBoardSize, onSubmit: (board: IBoardState) => void };
 export const BoardToInitialise = ({ size, onSubmit }: Props) => {
 	const isMouseDown = useRef(false);
-	const cells = useRef<boolean[]>(new Array(size.rows * size.cols).fill(false));
-	const lastCellToggled = useRef(NO_PREVIOUS_TOGGLED_CELL);
-	const setCellsAliveStatusRef = useRef([]);
+	const tiles = useRef<ITile[]>(new Array(size.rows * size.cols).fill(false));
+	const lastTileToggled = useRef(NO_PREVIOUS_TOGGLED_TILE);
+	const setTilesAliveStatusRef = useRef([]);
 	const [resetKey, setResetKey] = useState(0);
 
 	const reset = useCallback(() => {
-		cells.current = new Array(size.rows * size.cols).fill(false);
-		lastCellToggled.current = NO_PREVIOUS_TOGGLED_CELL;
+		tiles.current = new Array(size.rows * size.cols).fill(false);
+		lastTileToggled.current = NO_PREVIOUS_TOGGLED_TILE;
 		setResetKey((key) => key + 1);
 	}, [size]);
 
-	const toggleCell = useCallback((index: number) => {
-		lastCellToggled.current = index;
-		const newState = !cells.current[index];
-		cells.current[index] = newState;
-		const setIsAliveCellAtIndex = setCellsAliveStatusRef.current[index] as any;
-		setIsAliveCellAtIndex?.(newState);
+	const toggleTile = useCallback((index: number) => {
+		lastTileToggled.current = index;
+		const newState = !tiles.current[index];
+		tiles.current[index] = newState;
+		const setIsAliveTileAtIndex = setTilesAliveStatusRef.current[index] as any;
+		setIsAliveTileAtIndex?.(newState);
 	}, []);
 
 	const startSelection = useCallback((index: number) => {
-		toggleCell(index);
+		toggleTile(index);
 		isMouseDown.current = true;
-	}, [toggleCell]);
+	}, [toggleTile]);
 	const endSelection = useCallback(() => isMouseDown.current = false, []);
-	const onMouseMoveOnCell = useCallback((index: number) => {
-		if (isMouseDown.current && lastCellToggled.current !== index) {
-			toggleCell(index);
+	const onMouseMoveOnTile = useCallback((index: number) => {
+		if (isMouseDown.current && lastTileToggled.current !== index) {
+			toggleTile(index);
 		}
-	}, [toggleCell]);
+	}, [toggleTile]);
 
 	return (
 		<Fragment>
@@ -48,26 +48,26 @@ export const BoardToInitialise = ({ size, onSubmit }: Props) => {
 				onMouseUp={endSelection}
 				onMouseLeave={endSelection}
 			>
-				{cells.current.map((isAlive, index) => (
-					<Cell
-						ref={setCellsAliveStatusRef}
+				{tiles.current.map((isAlive, index) => (
+					<Tile
+						ref={setTilesAliveStatusRef}
 						key={index}
 						index={index}
 						isAlive={isAlive}
 						onMouseDown={() => startSelection(index)}
-						onMouseMove={() => onMouseMoveOnCell(index)}
+						onMouseMove={() => onMouseMoveOnTile(index)}
 					/>
 				))}
 			</BoardContainer>
 			<BottomSection>
 				<Caption>
-					Click on a cell or keep the mouse pressed and drag it over any cells
+					Click on a tile or keep the mouse pressed and drag it over any tiles
 					<br />
 					to toggle their status (alive/dead).
 				</Caption>
 				<ButtonsContainer>
 					<Button variant='contained' onClick={reset}>Reset</Button>
-					<Button variant='outlined' onClick={() => onSubmit(cells.current)}>Start</Button>
+					<Button variant='outlined' onClick={() => onSubmit(tiles.current)}>Start</Button>
 				</ButtonsContainer>
 			</BottomSection>
 		</Fragment>

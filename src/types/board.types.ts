@@ -1,6 +1,6 @@
 export type NeighbourhoodIndexes = number[];
-export type ICell = boolean;
+export type ITile = boolean;
 
-export type IBoardState = ICell[];
+export type IBoardState = ITile[];
 export type IBoardSize = { rows: number, cols: number };
 export type ExportBoardData = { history: IBoardState[], size: IBoardSize };

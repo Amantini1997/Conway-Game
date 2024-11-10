@@ -1,14 +1,14 @@
-import { IBoardSize, IBoardState, ICell, NeighbourhoodIndexes } from '../types/board.types'
+import { IBoardSize, IBoardState, ITile, NeighbourhoodIndexes } from '../types/board.types'
 
-const getNextCellState = (cell: ICell, neighbourCells: ICell[]) => {
-	const aliveNeighbours = neighbourCells.filter((isAlive) => isAlive).length;
-	// A cell that is dead at time step t will be alive at time step t+1 if
+const getNextTileState = (tile: ITile, neighbourTiles: ITile[]) => {
+	const aliveNeighbours = neighbourTiles.filter((isAlive) => isAlive).length;
+	// A tile that is dead at time step t will be alive at time step t+1 if
 	// exactly three of its eight neighbors were alive at time step t.
-	if (!cell && aliveNeighbours === 3) return true;
+	if (!tile && aliveNeighbours === 3) return true;
 
-	// A cell that is alive at time step t will remain alive at time step
+	// A tile that is alive at time step t will remain alive at time step
 	// if two or three of its neighbors are alive at time step t.
-	if (cell) return [2, 3].includes(aliveNeighbours);
+	if (tile) return [2, 3].includes(aliveNeighbours);
 
 	return false; 
 }
@@ -50,5 +50,5 @@ const getNeighbours = (neighbourhood: NeighbourhoodIndexes, boardState: IBoardSt
 export const getNextBoardState = (boardState: IBoardState, boardSize: IBoardSize) => {
 	const neighbourhoods = getNeighbourhoods(boardSize);
 	return boardState
-		.map((cell, index) => getNextCellState(cell, getNeighbours(neighbourhoods[index], boardState) ));
+		.map((tile, index) => getNextTileState(tile, getNeighbours(neighbourhoods[index], boardState) ));
 };

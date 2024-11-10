@@ -1,8 +1,8 @@
 import { forwardRef, HTMLAttributes, memo, useEffect, useState } from 'react'
-import { CellContainer } from './cell.styles';
+import { TileContainer } from './tile.styles';
 
 type Props = HTMLAttributes<HTMLDivElement> & { isAlive?: boolean, index?: number };
-export const Cell = memo(forwardRef(({ index = -1, isAlive: isAliveInput, ...props }: Props, ref: any) => {
+export const Tile = memo(forwardRef(({ index = -1, isAlive: isAliveInput, ...props }: Props, ref: any) => {
 	const [isAlive, setIsAlive] = useState(isAliveInput);
 
 	useEffect(() => {
@@ -15,6 +15,6 @@ export const Cell = memo(forwardRef(({ index = -1, isAlive: isAliveInput, ...pro
 	}, [isAliveInput]);
 
 	return (
-		<CellContainer $isAlive={isAlive} {...props} />
+		<TileContainer $isAlive={isAlive} {...props} />
 	);
 }), (prev, curr) => prev.isAlive === curr.isAlive);
