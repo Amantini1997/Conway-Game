@@ -40,6 +40,9 @@ export const App = () => {
 						size={boardSize.current as IBoardSize}
 						state={currentBoard}
 						onStateChange={onStateChange}
+						lastTime={boardStateHistory.current ? boardStateHistory.current.length - 1 : 0}
+						currentTime={currentBoardTime}
+						goToTime={updateTimeAndBoard}
 					/>
 				)
 				: (<StartPage onSubmit={onInitialiseBoardHistory} defaultBoardSize={boardSize.current} />)

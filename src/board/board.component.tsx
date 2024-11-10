@@ -8,12 +8,25 @@ type Props = {
 	state: IBoardState | undefined;
 	history: IBoardState[];
 	onStateChange: (newState: IBoardState) => void;
+	currentTime: number,
+	lastTime: number,
+	goToTime: (time: number) => void,
 }
-export const Board = ({ size, state, onStateChange, history }: Props) => (
+export const Board = ({ size, state, onStateChange, history, currentTime, lastTime, goToTime }: Props) => (
 	<MainContainer>
 		{!state?.length
 			? (<BoardToInitialise size={size} onSubmit={onStateChange} />)
-			: (<BoardToPlay size={size} state={state} onChange={onStateChange} history={history} />)
+			: (
+				<BoardToPlay
+					size={size}
+					state={state}
+					history={history}
+					onChange={onStateChange}
+					currentTime={currentTime}
+					lastTime={lastTime}
+					goToTime={goToTime}
+				/>
+			)
 		}
 	</MainContainer>
 );
