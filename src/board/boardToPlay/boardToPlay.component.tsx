@@ -1,9 +1,9 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
-import { ExportBoardData, IBoardSize, IBoardState } from '../../types/board.types';
+import { IBoardSize, IBoardState } from '../../types/board.types';
 import { BoardContainer } from '../board.styles';
 import { Tile } from '../tile/tile.component';
 import { ControlsContainer, Container, IconContainer } from './boardToPlay.styles';
-import { getNextBoardState } from '../../helpers/helpers';
+import { getNextBoardState } from '../../helpers/board.helpers';
 import { Button, Slider } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -11,6 +11,7 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
+import { exportData } from '../../helpers/saving.helpers';
 
 const VOLUME_MARKS = [
 	{
@@ -36,14 +37,6 @@ export const BoardToPlay = ({ size, state, onChange, history, goToTime, currentT
 	const [isPaused, setIsPaused] = useState(true);
 	const [speed, setSpeed] = useState(1000);
 	const intervalRef = useRef<NodeJS.Timer>();
-
-	const exportBoard = () => {
-		const link = document.createElement("a");
-		const data: ExportBoardData = { history, size };
-		link.href = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(data))}`;
-		link.download = `conway_game_board_${size.cols}_x_${size.rows}.json`;
-		link.click();
-	};
 
 	const animate = useCallback(() => {
 		onChange(getNextBoardState(state, size));
@@ -101,7 +94,7 @@ export const BoardToPlay = ({ size, state, onChange, history, goToTime, currentT
 					valueLabelDisplay="auto"
 					marks={VOLUME_MARKS}
 				/>
-				<Button onClick={exportBoard} variant='contained'>Export</Button>
+				<Button onClick={() => exportData(history, size)} variant='contained'>Export</Button>
 			</Container>
 		</Fragment>
 	);

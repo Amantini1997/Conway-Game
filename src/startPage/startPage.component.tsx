@@ -1,11 +1,11 @@
-import { IBoardState, IBoardSize, ExportBoardData } from '../types/board.types';
+import { IBoardState, IBoardSize } from '../types/board.types';
 import { Form, InputsContainer, Subtitle, TitleContainer } from './startPage.styles';
 import { Button, Divider } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from './startPage.validators';
-import { ChangeEvent } from 'react';
 import { Input } from './input.component';
+import { importData } from '../helpers/saving.helpers';
 
 type FormType = {
 	rows: number;
@@ -23,24 +23,6 @@ export const StartPage = ({ onSubmit, defaultBoardSize }: Props) => {
 		defaultValues: defaultBoardSize,
 	});
 	const { control, handleSubmit, formState: { isValid } } = formData;
-
-	const importBoard = (e: ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0];
-		if (file && file.type === "application/json") {
-			const reader = new FileReader();
-			reader.onload = (e) => {
-				try {
-					const { history, size } = JSON.parse(e.target?.result as string) as ExportBoardData;
-					onSubmit(history, size);
-				} catch (error) {
-					alert('Invalid JSON file');
-				}
-			};
-			reader.readAsText(file);
-		} else {
-			alert('Invalid JSON file');
-		}
-	};
 
 	return (
 		<Form onSubmit={handleSubmit((size: FormType) => onSubmit([], size))}>
@@ -65,8 +47,7 @@ export const StartPage = ({ onSubmit, defaultBoardSize }: Props) => {
 			</InputsContainer>
 			<Button variant='contained' color='info' disabled={!isValid} type='submit'>Confirm</Button>
 			<Divider>Or</Divider>
-			<Button variant='contained' component='label'>
-				<input hidden type='file' accept='application/JSON' onChange={importBoard} />
+			<Button variant='contained' component='label' onClick={() => importData(onSubmit)}>
 				Import
 			</Button>
 		</Form>

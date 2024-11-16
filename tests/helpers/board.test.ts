@@ -1,4 +1,4 @@
-import { getNextBoardState } from '../../src/helpers/helpers';
+import { getNextBoardState } from '../../src/helpers/board.helpers';
 
 describe('getNextBoardState', () => {
 	test('blinker pattern', () => {
