@@ -1,11 +1,11 @@
 import { ChangeEvent } from 'react';
 import { CompressedBoard, ExportBoardData, IBoardSize, IBoardState } from '../types/board.types';
 
-const compressBoard = (board: IBoardState) => board
+export const compressBoard = (board: IBoardState) => board
 	.map((isAlive, index) => isAlive ? index : undefined)
 	.filter((v) => v !== undefined) as CompressedBoard;
 
-const decompressBoard = (board: CompressedBoard, size: IBoardSize): IBoardState => {
+export const decompressBoard = (board: CompressedBoard, size: IBoardSize): IBoardState => {
 	const uncompressedBoard = new Array(size.cols * size.rows).fill(false);
 	board.forEach((i) => { uncompressedBoard[i] = true });
 	return uncompressedBoard;
