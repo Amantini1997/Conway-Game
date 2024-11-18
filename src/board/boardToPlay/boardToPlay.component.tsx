@@ -1,12 +1,13 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { IBoardSize, IBoardState } from '../../types/board.types';
-import { BoardContainer } from '../board.styles';
+import { BoardContainer, GameOverMessage, GameOverTitle, ModalContainer } from '../board.styles';
 import { Tile } from '../tile/tile.component';
 import { ControlsContainer, Container, IconContainer } from './boardToPlay.styles';
-import { getNextBoardState } from '../../helpers/board.helpers';
-import { Button, Slider } from '@mui/material';
+import { getNextBoardState, isGameStuckInCyclicalState, isGameStuckInStableState } from '../../helpers/board.helpers';
+import { Button, Modal, Slider } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import StopIcon from '@mui/icons-material/Stop';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
@@ -37,11 +38,39 @@ export const BoardToPlay = ({ size, state, onChange, history, goToTime, currentT
 	const [isPaused, setIsPaused] = useState(true);
 	const [speed, setSpeed] = useState(1000);
 	const intervalRef = useRef<NodeJS.Timer>();
+	const [showModal, setShowModal] = useState(false);
+	const gameOverState = useRef<{ index: number, isCyclical: boolean }>();
+	const atCurrentTimeGameIsOver = gameOverState.current?.index === currentTime;
 
-	const animate = useCallback(() => {
-		onChange(getNextBoardState(state, size));
-	}, [state, size, onChange]);
+	const isGameOver = () => {
+		if (gameOverState.current?.index) return atCurrentTimeGameIsOver;
 
+		if (isGameStuckInStableState(history)) {
+			gameOverState.current = { index: currentTime, isCyclical: false };
+			return true;
+		}
+		if (isGameStuckInCyclicalState(history)) {
+			gameOverState.current = { index: currentTime, isCyclical: true };
+			return true;
+		}
+		return false;
+	};
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const animate = () => {
+		// TODO - make this togglable from UI
+		if (isGameOver()) {
+			setIsPaused(true);
+			setShowModal(true);
+			clearInterval(intervalRef.current)
+			return;
+		}
+		if (currentTime < lastTime) {
+			onChange(history[currentTime + 1]);
+		} else {
+			onChange(getNextBoardState(state, size));
+		}
+	};
 	const speedToText = useCallback((s: number) => `${(s / 1000).toFixed(1)}s`, []);
 
 	useEffect(() => {
@@ -53,6 +82,25 @@ export const BoardToPlay = ({ size, state, onChange, history, goToTime, currentT
 
 	return (
 		<Fragment>
+			<Modal open={showModal} onClose={() => setShowModal(false)}>
+				<ModalContainer>
+					<GameOverTitle>Game Over</GameOverTitle>
+					<GameOverMessage>
+						{gameOverState.current?.isCyclical ? (
+							<>
+								<b>Cycle detected: </b>
+								from here on, the board pattern would only repeat itself
+							</>
+						) : (
+							<>
+								<b>End of life: </b>
+								there are no more living cells
+							</>
+						)}
+					</GameOverMessage>
+					<Button onClick={() => setShowModal(false)} variant='contained'>Close</Button>
+				</ModalContainer>
+			</Modal>
 			<BoardContainer $size={size}>
 				{state.map((isAlive, index) => (
 					<Tile
@@ -70,9 +118,15 @@ export const BoardToPlay = ({ size, state, onChange, history, goToTime, currentT
 				<IconContainer disabled={!isPaused || currentTime === 0} onClick={() => goToTime(currentTime - 1)}>
 					<SkipPreviousIcon />
 				</IconContainer>
-				<IconContainer onClick={() => setIsPaused(!isPaused)}>
-					{isPaused ? <PlayArrowIcon /> : <PauseIcon />}
-				</IconContainer>
+				{atCurrentTimeGameIsOver ? (
+					<IconContainer disabled>
+						<StopIcon />
+					</IconContainer>
+				) : (
+					<IconContainer onClick={() => setIsPaused(!isPaused)}>
+						{isPaused ? <PlayArrowIcon /> : <PauseIcon />}
+					</IconContainer>
+				)}
 				<IconContainer disabled={!isPaused || currentTime === lastTime} onClick={() => goToTime(currentTime + 1)}>
 					<SkipNextIcon />
 				</IconContainer>

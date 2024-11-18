@@ -28,3 +28,31 @@ export const BoardContainer = styled.div<{ $size: IBoardSize, $togglable?: boole
 	margin: auto;
 	transition: all .2s;
 `;
+
+export const ModalContainer = styled.div`
+	border-radius: 12px;
+	background-color: ${({ theme }) => theme.palette.primary.contrastText};
+	margin: auto;
+	margin-top: 34%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	width: 350px;
+	padding-bottom: 20px;
+	overflow: hidden;
+`;
+
+export const GameOverTitle = styled.b`
+	font-size: 20px;
+	width: 100%;
+	display: grid;
+	place-content: center;
+	background-color: ${({ theme }) => theme.palette.primary.main};
+	color: ${({ theme }) => theme.palette.primary.contrastText};
+	height: 40px;
+`;
+
+export const GameOverMessage = styled.div`
+	padding: 30px 40px;
+`;

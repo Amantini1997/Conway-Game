@@ -1,4 +1,5 @@
 import { IBoardSize, IBoardState, ITile, NeighbourhoodIndexes } from '../types/board.types'
+import { isEqual } from 'lodash';
 
 const getNextTileState = (tile: ITile, neighbourTiles: ITile[]) => {
 	const aliveNeighbours = neighbourTiles.filter((isAlive) => isAlive).length;
@@ -51,4 +52,14 @@ export const getNextBoardState = (boardState: IBoardState, boardSize: IBoardSize
 	const neighbourhoods = getNeighbourhoods(boardSize);
 	return boardState
 		.map((tile, index) => getNextTileState(tile, getNeighbours(neighbourhoods[index], boardState) ));
+};
+
+export const isGameStuckInCyclicalState = (history: IBoardState[]) => {
+	if (history.length <= 1) return false;
+	return isEqual(history.at(-1), history.at(-3));
+};
+
+export const isGameStuckInStableState = (history: IBoardState[]) => {
+	if (history.length <= 1) return false;
+	return isEqual(history.at(-1), history.at(-2));
 };
